@@ -6,11 +6,13 @@ module Frouper
       def initialize start_date, end_date
         @start_date = start_date
         @end_date = end_date
-        @values = []
       end
 
       def << value
-        @values << value
+        @max = [(@max || value), value].max
+        @min = [(@min || value), value].min
+        @sum = (@sum || 0) + value
+        @count = (@count || 0) + 1
       end
 
       def date
@@ -18,15 +20,15 @@ module Frouper
       end
 
       def high
-        @values.max
+        @max
       end
 
       def low
-        @values.min
+        @min
       end
 
       def center
-        @values.reduce(:+) / @values.size
+        @sum / @count
       end
 
       def to_s
