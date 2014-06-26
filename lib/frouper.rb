@@ -70,7 +70,7 @@ module Frouper
       high = []
       low = []
       center = []
-      items.each do |item|
+      items.sort_by(&:date).each do |item|
         high << [item.date, item.high]
         low << [item.date, item.low]
         center << [item.date, item.center]
