@@ -3,9 +3,8 @@ require "frouper/version"
 module Frouper
   class Frouper
     class Item
-      def initialize start_date, end_date
-        @start_date = start_date
-        @end_date = end_date
+      def initialize date
+        @date = date
       end
 
       def << value
@@ -16,7 +15,7 @@ module Frouper
       end
 
       def date
-        (@start_date + @end_date) / 2
+        @date
       end
 
       def high
@@ -45,7 +44,8 @@ module Frouper
     end
 
     def accumulate date, value
-      item = @items[date_for(date)] ||= Item.new(date, date + @delta)
+      date = date_for(date)
+      item = @items[date] ||= Item.new(date)
       item << value
     end
 
@@ -55,7 +55,7 @@ module Frouper
 
     def date_for date
       n = (date - @start_date) / @delta
-      @start_date + n * @delta
+      @start_date + (n + 0.5) * @delta
     end
 
     def to_s
